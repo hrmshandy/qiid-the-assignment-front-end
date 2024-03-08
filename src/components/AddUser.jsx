@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { uuid } from "@/lib/utils";
 import { Input } from "./ui";
+import { useUserList } from "@/hooks/useUserList";
 
-const AddUser = ({ userList, setUserList }) => {
+const AddUser = () => {
+  const { userList, setUserList } = useUserList();
   const [newUser, setNewUser] = useState("");
 
   const addNewUser = (e) => {

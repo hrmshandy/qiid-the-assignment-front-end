@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { Button, Input } from "./ui";
+import { useUserList } from "@/hooks/useUserList";
 
-const Follow = ({ userList }) => {
+const Follow = () => {
+  const { userList } = useUserList();
   const [follower, setFollower] = useState("");
   const [followee, setFollowee] = useState("");
 

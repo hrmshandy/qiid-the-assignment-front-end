@@ -1,4 +1,7 @@
-const UserList = ({ userList }) => {
+import { useUserList } from "@/hooks/useUserList";
+
+const UserList = () => {
+  const { userList } = useUserList();
   const checkFollow = (user, e) => {
     e.preventDefault();
 

@@ -9,7 +9,7 @@
 
 * Good Luck
 */
-import { useState } from "react";
+import { UserListProvider } from "./context/UserListContext";
 import UserList from "./components/UserList";
 import Follow from "./components/Follow";
 import AddUser from "./components/AddUser";
@@ -17,22 +17,22 @@ import AddUser from "./components/AddUser";
 import "./styles.css";
 
 const App = () => {
-  const [userList, setUserList] = useState([]);
-
   return (
-    <div className="py-10 max-w-xs mx-auto">
-      <h2 className="text-xl font-bold text-center mb-6">
-        Follow Unfollow Assignment
-      </h2>
+    <UserListProvider>
+      <div className="py-10 max-w-xs mx-auto">
+        <h2 className="text-xl font-bold text-center mb-6">
+          Follow Unfollow Assignment
+        </h2>
 
-      <AddUser userList={userList} setUserList={setUserList} />
+        <AddUser />
 
-      <UserList userList={userList} />
+        <UserList />
 
-      <hr className="mt-12 mb-6 border-slate-200" />
+        <hr className="mt-12 mb-6 border-slate-200" />
 
-      <Follow userList={userList} />
-    </div>
+        <Follow />
+      </div>
+    </UserListProvider>
   );
 };
 
