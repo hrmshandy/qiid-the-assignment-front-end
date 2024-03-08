@@ -8,3 +8,7 @@ export function uuid() {
 export function cn(...inputs) {
   return twMerge(clsx(inputs));
 }
+
+export function getInitial(name) {
+  return name.charAt(0).toUpperCase();
+}

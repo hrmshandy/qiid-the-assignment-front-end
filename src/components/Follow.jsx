@@ -1,11 +1,23 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Button, Input } from "./ui";
 import { useUserList } from "@/hooks/useUserList";
 
 const Follow = () => {
-  const { userList } = useUserList();
+  const { userList, setUserList } = useUserList();
   const [follower, setFollower] = useState("");
   const [followee, setFollowee] = useState("");
+
+  const indicesMemo = useMemo(() => {
+    const trimmedFollower = follower.trim();
+    const trimmedFollowee = followee.trim();
+    const followerIndex = userList.findIndex(
+      (user) => user.name === trimmedFollower,
+    );
+    const followeeIndex = userList.findIndex(
+      (user) => user.name === trimmedFollowee,
+    );
+    return { followerIndex, followeeIndex };
+  }, [userList, follower, followee]);
 
   const addFollow = () => {
     if (!follower || !followee) {
@@ -13,36 +25,43 @@ const Follow = () => {
       return;
     }
 
-    const trimmedFollower = follower.trim();
-    const trimmedFollowee = followee.trim();
+    const { followerIndex, followeeIndex } = indicesMemo;
 
-    const followerUser = userList.find((user) => user.name === trimmedFollower);
-    const followeeUser = userList.find((user) => user.name === trimmedFollowee);
+    const followerUser = userList[followerIndex];
+    const followeeUser = userList[followeeIndex];
 
     if (!followerUser) {
-      alert(`${trimmedFollower} is not yet a user.`);
+      alert(`${follower} is not yet a user.`);
       return;
     }
 
     if (!followeeUser) {
-      alert(`${trimmedFollowee} is not yet a user.`);
+      alert(`${followee} is not yet a user.`);
       return;
     }
 
-    if (trimmedFollower === trimmedFollowee) {
-      alert(`${trimmedFollowee} cannot follow themselves`);
+    if (follower === followee) {
+      alert(`${followee} cannot follow themselves`);
       return;
     }
 
     // Check if the follow relationship already exists
     if (followerUser.following.includes(followeeUser)) {
-      alert(`${trimmedFollower} is already following ${trimmedFollowee}`);
+      alert(`${follower} is already following ${followee}`);
       return;
     }
 
-    // Add follow relationship
-    followerUser.following.push(followeeUser);
-    followeeUser.followers.push(followerUser);
+    // update user list
+    const updatedUserList = userList.map((user, index) => {
+      if (index === followerIndex) {
+        return { ...user, following: [...user.following, followeeUser] };
+      } else if (index === followeeIndex) {
+        return { ...user, followers: [...user.followers, followerUser] };
+      }
+      return user;
+    });
+
+    setUserList(updatedUserList);
 
     setFollower("");
     setFollowee("");
