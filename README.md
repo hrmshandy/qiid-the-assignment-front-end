@@ -5,3 +5,4 @@
 - Add required validation when enter empty in input user field
 - Add unique validation when user already exist
 - Add a logic for check if the follow relationship already exists
+- Also check branch feature/floral-wildflower for more improvements
